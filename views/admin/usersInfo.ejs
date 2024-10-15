@@ -1,0 +1,88 @@
+<%- include("./layouts/header") %>
+
+<section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">Sellers list</h2>
+        <div>
+            <a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Email & Phone</th>
+                            <th>Verified User</th>
+                            <th>Action</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for( let index = 0; index < allUsers.length; index++ ) { %>
+                            <tr>
+                                <td width="40%">
+                                    <a href="#" class="itemside">
+                                        <div class="info pl-3">
+                                            <h6 class="mb-0 title"><%= allUsers[index].userName %></h6>
+                                            <small class="text-muted"><%= allUsers[index]._id %></small>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                          <td><%= allUsers[index].userEmail %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= allUsers[index].userPh %></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td><span class="badge rounded-pill <%= allUsers[index].isVerified ? 'alert-success' : 'alert-danger' %> "><%= allUsers[index].isVerified %></span></td>
+                                <td>08.07.2020</td>
+                                <td class="text-end">
+                                    <% if(allUsers[index].isBlocked){ %>
+                                    <form action="/admin/unblockUser?userEmail=<%= allUsers[index].userEmail %>" method="post">
+                                        <input type="submit" value="Unblock"
+                                            class="btn btn-sm btn-danger rounded font-sm mt-15"
+                                            onclick="return confirm('Are you sure?')">                                           
+                                    </form>
+                                    <% } else{ %>
+                                    <form action="/admin/blockUser?userEmail=<%= allUsers[index].userEmail %>" method="post">
+                                        <input  type="submit" value="Block" 
+                                            class="btn btn-sm btn-success rounded font-sm mt-15"
+                                            onclick="return confirm('Are you sure?')">
+                                    </form>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% } %>
+               
+                    </tbody>
+                </table>
+                <!-- table-responsive.// -->
+            </div>
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<%- include("../admin/layouts/footer") %>

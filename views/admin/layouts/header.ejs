@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Nest Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/admin/imgs/theme/favicon.svg" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <!-- Template CSS -->
+        <link href="/admin/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/admin/css/modified.css">
+        <!-- cropper-js  -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+    </head>
+
+    <body> 
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="index.html" class="brand-wrap">
+                    <!-- <img src="assets/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" /> -->
+                    <h2>Bubbles</h2>
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item  "> <!--add class "active" for highlighting-->
+                        <a class="menu-link" href="/admin">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-products-list.html">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/products/All/0">Product List</a>
+                            <a href="/admin/add-products">Add products</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-orders-1.html">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/orders/0">All orders</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-sellers-cards.html">
+                            <i class="icon material-icons md-store"></i>
+                            <span class="text">Users</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/users">Users List</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-form-product-1.html">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Categories</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/categories">Category List</a>
+                            <a href="/admin/add-category">Add category</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-transactions-1.html">
+                            <i class="icon material-icons">
+                                <span class="material-symbols-outlined">payments</span>
+                            </i>
+                            <span class="text">Discounts</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/Offers">Offers </a>
+                            <a href="/admin/coupons">Coupons </a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-transactions-1.html">
+                            <i class="icon material-icons md-monetization_on"></i>
+                            <span class="text">Transactions</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/transactions/0">Online Payments </a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-transactions-1.html">
+                            <i class="icon material-icons md-settings"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/banners">Change Banner</a>
+                        </div>
+                    </li>
+                </ul>
+                <hr />
+                <br />
+                <br />
+            </nav>
+        </aside>
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <datalist id="search_terms">
+                            <option value="Products"></option>
+                            <option value="New orders"></option>
+                            <option value="Apple iphone"></option>
+                            <option value="Ahmed Hassan"></option>
+                        </datalist>
+                    </form>
+                </div>
+                <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">Admin</a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </header>

@@ -1,0 +1,214 @@
+<%- include("../user/layouts/header") %>
+
+    <div class="banner-top">
+        <div class="container">
+            <h1>Bubbles</h1>
+            <em></em>
+            <h2><a href="index.html">Home</a><label>/</label>
+                <%= product.productName %>
+            </h2>
+        </div>
+    </div>
+    <div class="single">
+        <div class="container">
+            <div class="col-md-9">
+                <div class="col-md-5 grid">
+                    <div class="flexslider col-md-12">
+                        <ul class="slides row col-md-12">
+                            <% product.productImages.forEach(img=> { %>
+                                <li class="col-md-3" data-thumb="<%= img %>">
+                                    <div class="thumb-image"> <img src="<%= img %>" data-imagezoom="true"
+                                            class="img-responsive"></div>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-7 single-top-in">
+                    <div class="span_2_of_a1 simpleCart_shelfItem">
+                        <h3>
+                            <%= product.productName %>
+                        </h3>
+                        <p class="in-para">
+                            <%= product.brand %>
+                        </p>
+                        <div class="price_single">
+                            <% if(product.appliedOffer  && product?.appliedOffer?.offerType == 'percentage'){ %>
+                                <span class="reducedfrom item_price"><strike>&#x20B9; <%= product.price %></strike></span>
+                                <span style="margin-left: 20px;" id="reducedPrice" class="reducedfrom item_price">&#x20B9; <%= Math.ceil(product.offerPrice) %></span>
+                                <span style="margin-left: 20px;"  class="reducedfrom item_price"><%= product.appliedOffer.percentage %>% OFF</span>
+                            <% }else{ %>
+                                <span class="reducedfrom item_price" id="originalPrice">&#x20B9; <%= product.price %></span>
+                            <% } %>
+                        
+                            <div  class="clearfix"></div>
+                            
+                        </div>
+                        <h4 class="quick">Quick Overview:</h4>
+                        <p class="quick_desc">
+                        <pre><%= product.desc %></pre>
+                        </p>
+                        <div class="wish-list">
+                            <ul>
+                                <li class="wish"><a href="#" id="add-wishlist" data-productid="<%= product._id %>">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        Add to Wishlist
+                                    </a>
+                                </li>
+                                <li class="compare">
+                                    <form action="/checkout/<%= product._id %>" method="post">
+                                        <input type="hidden" value="" id="selectedCoupon" name="selectedCoupon">
+                                        <input type="hidden" name="productQty" value='1' id="productQty">
+                                        <input class="btn btn-primary" type="submit" value="Buy now">
+                                    </form>                                  
+                                </li>
+                            </ul>
+                        </div>
+                        <script>
+                            $(document).ready(function(){
+                                    $('#add-wishlist').click(function(event){
+                                        event.preventDefault();
+                                        const productId = $(this).data('productid');
+                                        $(this).html('<span class="glyphicon glyphicon-ok" aria-hidden="true"> Added to wishlist');
+                                        $(this).prop('disabled',true)
+                                        $.ajax({
+                                            url:'/wishlist',
+                                            method:'POST',
+                                            data:{productId},
+                                            success:function(response){
+                                                console.log(response)
+                                            }
+                                        })
+
+                                    })
+                           
+                            })
+                        </script>
+                        <div >stock: <span id="stockQty"><%= product.stockQty %></span> </div>
+                        <div class="quantity">
+                            <div class="quantity-select">
+                                <div class="entry value-minus">&nbsp;</div>
+                                <div class="entry value"><span>1</span></div>
+                                <div class="entry value-plus active">&nbsp;</div>
+                            </div>
+                        </div>  
+                       
+                        <!--quantity-->
+                        <script>
+                            $('.value-plus').on('click', function () {
+                                let stock = $('#stockQty').text()
+                                console.log(stock)
+                                var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10) + 1;
+                                if(newVal<=stock) divUpd.text(newVal);
+                                updateCartQuantity(newVal);
+                            });
+
+                            $('.value-minus').on('click', function () {
+                                var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10) - 1;
+                                if (newVal >= 1) divUpd.text(newVal);
+                                updateCartQuantity(newVal);
+                            });
+                        </script>
+                        
+                        <div>
+                        <!--quantity-->
+                        <% if(isAuthenticated){ %>
+                            <% if(cartItems && cartItems.indexOf((product._id ).toString())!==-1){ %>
+                                <form action="/remove-from-cart/<%= product._id  %>/" method="post">
+                                    <input type="hidden" name="cartQuantity" id="cartQuantity" value="1">
+                                    <button type="submit"  class="add-to btn hvr-skew-backward" >Remove from cart</button>
+                                </form>
+                            <% }else{%>
+                                <form action="/add-to-cart/<%= product._id %>" method="post">
+                                    <input type="hidden" name="cartQuantity" id="cartQuantity" value="1">
+                                    <button type="submit" class="add-to btn hvr-skew-backward">Add to cart</button>
+                                </form>                              
+                            <% } %>
+                        <% } %>
+                        </div>
+                        
+                        <script>
+                            function updateCartQuantity(value){
+                                console.log(value)
+                                $('#cartQuantity').val(value)
+                                $('#productQty').val(value)
+                            }
+                        </script>
+                       
+                        <div class="clearfix"> </div>
+                    </div>
+
+                </div>
+                <div class="clearfix"> </div>
+                <!---->
+                <div class="tab-head">
+                    <nav class="nav-sidebar">
+                        <ul class="nav tabs">
+                            <li class="active"><a href="#tab1" data-toggle="tab">Product Description</a></li>
+                            <li class=""><a href="#tab2" data-toggle="tab">Additional Information</a></li>
+                        </ul>
+                    </nav>
+                    <div class="tab-content one">
+                        <div class="tab-pane active text-style" id="tab1">
+                            <div class="facts">
+                                <p>
+                                <pre><%= product.desc %></pre>
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane text-style" id="tab2">
+                            <div class="facts">
+                                <ul>
+                                    <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Research</li>
+                                    <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Design and
+                                        Development</li>
+                                    <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Porting and
+                                        Optimization</li>
+                                    <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>System
+                                        integration</li>
+                                    <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Verification,
+                                        Validation and Testing</li>
+                                    <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Maintenance and
+                                        Support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!---->
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+
+
+    <%- include("../user/layouts/footer") %>
+
+        <!--//footer-->
+        <script src="/js/imagezoom.js"></script>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script defer src="/js/jquery.flexslider.js"></script>
+        <link rel="stylesheet" href="/css/flexslider.css" type="text/css" media="screen" />
+
+        <script>
+            // Can also be used with $(document).ready()
+            $(window).load(function () {
+                $('.flexslider').flexslider({
+                    animation: "slide",
+                    controlNav: "thumbnails"
+                });
+            });
+        </script>
+
+        <script src="/js/simpleCart.min.js"> </script>
+        <!-- slide -->
+        <script src="/js/bootstrap.min.js"></script>
+
+
+
+        </body>
+
+        </html>

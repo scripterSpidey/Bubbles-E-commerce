@@ -1,0 +1,110 @@
+<%- include("../admin/layouts/header") %>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Orders</h2>
+            </div>
+            <!-- <div>
+                <input type="text" placeholder="Search order ID" class="form-control bg-white" />
+            </div> -->
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th scope="col" >Order ID</th>
+                                <th scope="col" >Payment Method</th>
+                                <th scope="col" >Total</th>
+                                <th scope="col" >Status</th>
+                                <th scope="col" >Order Date</th>
+                                <th scope="col" >Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i=0;i<orders.length;i++){ %>
+                                <tr>
+                                    <td> <%= i+1 %></td>
+                                    <td>
+                                        <b><%= orders[i].orderId %></b>
+                                    </td>
+                                    <td>
+                                        <%= orders[i].paymentMethod %>
+                                    </td>
+                                    <td>&#x20B9; <%= orders[i].totalPrice %></td>
+                                    <td>
+                                        <span class="badge badge-pill <%=
+                                            orders[i].status == 'Delivered' ? 'badge-soft-success':
+                                            orders[i].status == 'Cancelled' ? 'badge-soft-warning':
+                                            orders[i].status == 'Returned'  ? 'badge-soft-danger' :'badge-soft-info'%> p-2"><%= orders[i].status %></span>
+                                    </td>
+                                    <td>
+                                        <%= new Date(orders[i].createdAt).toLocaleDateString() %>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="/admin/order-details/<%= orders[i]._id %>" class="btn btn-xs"> View details</a>
+                                            </div>
+                                            <div class="dropdown col-md-4" >
+                                                <a href="#" data-bs-toggle="dropdown"
+                                                    class="btn btn-light rounded btn-sm font-sm"> <i
+                                                        class="material-icons md-more_horiz"></i> </a>
+                                                <div class="dropdown-menu">
+                                                    <% if(orders[i].status == 'Pending'){ %>
+                                                        <a class="dropdown-item text-danger" onclick="return confirm('Are you sure')" 
+                                                        href="/admin/cancel-order/Cancelled/<%= orders[i]._id %>">Cancel order</a>
+                                                        <a class="dropdown-item text-success" onclick="return confirm('Are you sure')"  
+                                                        href="/admin/cancel-order/Delivered/<%= orders[i]._id %>">Confirm Delivery</a>
+                                                    <% } %>     
+                                                </div>
+                                            </div>
+                                        </div> <!-- dropdown //end -->
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <% if (pageNumber>0){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="/admin/orders/<%= pageNumber-1 %>"><i class="material-icons md-chevron_left"></i></a>
+                        </li>
+                        <% } %>
+                        <% for(let i=0;i<totalPages;i++){ %>
+                        <li class="page-item "><a class="page-link" href="/admin/orders/<%= i%>"><%= i+1 %></a></li>
+                        <% } %>
+                        <% if(pageNumber<totalPages-1){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="/admin/orders/<%= pageNumber+1 %>"><i class="material-icons md-chevron_right"></i></a>
+                        </li>
+                        <% } %>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <script>
+        function styleStatus(status){
+            switch(status){
+                case 'Pending':
+                    return 'badge-soft-info';
+                case 'Delivered':
+                    return 'badge-soft-success';
+                case 'Returned':
+                    return 'badge-soft-danger';
+                case 'Cancelled':
+                    return 'badge-soft-warning'
+            }
+        }
+    </script>
+  
+    <%- include("../admin/layouts/footer") %>

@@ -1,0 +1,89 @@
+<%- include("../admin/layouts/header") %>
+
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Create new offer</h2>
+            </div>
+            <% if(message){ %>
+                <div class=" alert-success alert"><%= message %></div>
+                <% } %>
+        </div>
+        <form action="/admin/offers" class="row" method="post">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Offer title</label>
+                            <input type="text" name="offerTitle" placeholder="Type here" class="form-control" id="product_title" required />
+                        </div>
+                        <p > Offer  Type</p>
+                        <div class="mb-4 row col-md-12" style="padding-left: 12px;">
+                            <label class="mb-2 form-check form-check-inline col-md-3" style="width: 30%;">
+                                <input class="form-check-input offerType" value="percentage"  name="offerType" type="radio" required>
+                                <span class="form-check-label"> Percentage </span>
+                            </label>
+                            <!-- <label class="mb-2 form-check form-check-inline col-md-3" style="width: 30%;">
+                                <input class="form-check-input offerType" value="fixedAmount"  name="offerType" type="radio" required>
+                                <span class="form-check-label"> Fixed amount </span>
+                            </label> -->
+                            <!-- <label class="mb-2 form-check form-check-inline col-md-3" style="width: 30%;">
+                                <input class="form-check-input offerType" value="buyXgetY" name="offerType" type="radio" required>
+                                <span class="form-check-label"> Buy X Get Y </span>
+                            </label> -->
+                        </div>
+                        <div class="row gx-3">
+                            <div hidden id="percentageDiv" class="col-md-6 mb-3">
+                                <label for="percentageInput" id="discountLabel"  class="form-label">Percentage discount </label>
+                                <input id="percentageInput" min="0" max="100"  type="number" name="percentage" placeholder="Type here" class="form-control offerInput"  />
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit"  class="btn btn-md rounded font-sm hover-up text-center" value="Create">
+                </div>
+               
+            </div>
+        </form>
+    </div>
+</section> 
+
+<script>
+                            
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const offerInput = document.querySelectorAll('.offerInput');
+        const offerTypes = document.querySelectorAll('.offerType');
+        const percentageDiv = document.getElementById('percentageDiv');
+        const percentageInput = document.getElementById('percentageInput');
+
+        offerInput.forEach(input =>{
+            input.addEventListener('keydown',function(event){
+                if(event.key == '-' || event.key == 'e' || event.key == '.' ){
+                    event.preventDefault();
+                    }
+            });
+        });
+
+        percentageInput.addEventListener('input',function(){
+            if(this.value > 99){
+                this.value = this.value.slice(0,-1)
+            }
+        })
+
+        offerTypes.forEach(type=>{
+            type.addEventListener('change',function(){
+                if(this.value == 'percentage'){
+                    percentageDiv.hidden = false;
+                    percentageInput.required  = true;
+
+                    percentageInput.disabled  = false;
+                }
+            
+            })
+        })
+    });
+
+</script>
+
+<%- include("../admin/layouts/footer") %>

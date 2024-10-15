@@ -1,0 +1,120 @@
+<%- include("../user/layouts/header") %>
+
+<section class="content-main container">
+  
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="row gx-5">
+                <div class="col-sm-12">
+                    <%- include("../user/layouts/profileHeader") %>
+                </div>
+                <div class="col-sm-12">
+                    <section class="content-body p-xl-4">
+                        <form>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="row gx-3">
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label">User name</label>
+                                            <div class="form-control"><%= userData.userName %></div>
+                                        </div>                               
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email</label>
+                                            <div class="form-control"><%= userData.userEmail %></div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <div class="form-control"><%= userData.userPh %></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                          
+                            <a href="/user-address" class="btn btn-primary" type="submit">Manage adresses</a>
+                        </form>
+                        <hr class="my-5" />
+                        <div class="row" style="max-width: 920px">
+                            <div class="col-md">
+                                <article class="box mb-3 bg-light">
+                                    <a class="btn float-end btn-light btn-sm rounded font-md"  id="toggleOtpBtn" >Change Password </a>
+                                </article>
+                                <div class="col-sm-12" id="sendOtpBtn" hidden >
+                                    <small>Want to change password?Click here to send OTP to your registered mail.</small><br>
+                                    <small><a href="/forgot-password">Send OTP</a></small>
+                                </div>
+                            </div>                      
+                            <div class="col-md"> 
+                                <article class="box mb-3 bg-light">
+                                    <a class="btn float-end btn-light rounded btn-sm font-md" href="#">Delete account</a>
+                                </article>
+                            </div>
+                            <div class="col-md"> 
+                                <article class="box mb-3 bg-light">
+                                    <a id="refferalBtn" class="btn float-end btn-light rounded btn-sm " href="#">Invite a friend</a>
+                                    <p hidden id="refferalLink"></p>
+                                </article>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</section>
+
+<script>
+    
+    $(document).ready(function(){
+        $('#toggleOtpBtn').click(function(){
+            $('#sendOtpBtn').toggle()
+        })
+         
+
+        $('#refferalBtn').click(function(){
+            let refferalCode;
+            $.ajax({
+                url: '/refferal-code',
+                type: 'PATCH',
+                success:function(response){
+                    if(response.refferalCode){
+                        
+                        refferalCode = response.refferalCode;
+                        refferalLink = `https://bubbleskids.shop/user-signup/${response.refferalCode}`
+                        $('#refferalLink').text(refferalLink)
+                
+                        Swal.fire({
+                            title: " <p>Share this link</p>",
+                        
+                            html: `
+                                 <b id="refferalLink">${refferalLink}</b>
+                            `,
+                            showCloseButton: true,
+                            showCancelButton: true,
+                            focusConfirm: true,
+                            confirmButtonText: `
+                                <i class="fa-solid fa-copy"></i> Copy to clipboard
+                            `,
+                            cancelButtonText: `
+                                Cancel
+                            `,
+                        }).then(result=>{
+                            if(result.isConfirmed){
+                               navigator.clipboard.writeText(refferalLink);
+                            }
+                        });
+                    }
+                }
+            })
+        })
+    })
+</script>
+
+
+    <%- include("../user/layouts/footer") %>
+
+
+ </body>
+</html>

@@ -1,0 +1,110 @@
+<%- include("../user/layouts/header") %>
+
+	<div class="banner" style="position: relative;">
+		<div class="banner-slider">
+			<% banners.images.forEach(img=>{ %>
+			<div class="banner-slide">
+				<img src="<%= img %>"   class="banner-image" alt="" >
+			</div>
+			<% }) %>
+		</div>
+		<script>
+			$(document).ready(function(){
+				const bannerImages = $('.banner-image');
+				let index = 0
+				function showImage(){
+					bannerImages.eq(index).fadeIn(1000); 
+        			bannerImages.not(bannerImages.eq(index)).fadeOut(1000); 
+					index = (index + 1) % bannerImages.length;
+				}
+
+				setInterval(showImage,3000);
+			})
+
+		</script>
+		
+		<div class="container">
+			<section class="rw-wrapper" >
+				<h1 class="rw-sentence">
+					<span>Fun Finds for Kids!</span>
+					<div class="rw-words rw-words-2">
+						<span>Attractive collections</span>
+						<span>Amazing Deals, Unbeatable Prices!</span>
+						<span>Unmatched Quality!</span>
+					</div>
+				</h1>
+			</section>
+		</div>
+	</div>
+	<div class="content">
+		<div class="container">
+			<div class="content-mid">
+				<h3>New Arrivals</h3>
+				<label class="line"></label>
+				<div class="mid-popular">
+					<% products.forEach(product=>{ %>
+					<div class="col-md-3 item-grid simpleCart_shelfItem" style="margin-bottom: 10px;">
+						<div class=" mid-pop">
+							<div class="pro-img">
+								<img src="<%= product.productImages[0] %>" class="img-responsive" alt="">
+								<div class="zoom-icon ">
+									<a class="picture" href="<%= product.productImages[0] %>" rel="title"
+										class="b-link-stripe b-animate-go  thickbox"><i
+											class="glyphicon glyphicon-search icon "></i></a>
+									<a href="/single-product/<%= product._id %>"><i class="glyphicon glyphicon-menu-right icon"></i></a>
+								</div>
+							</div>
+							<div class="mid-1">
+								<div class="women">
+									<div class="women-top">
+										<span><%= product.category %></span>
+										<h6><a href="/single-product/<%= product._id %>"><%= product.productName %></a></h6>
+									</div>
+									
+									<div class="clearfix"></div>
+								</div>
+								<div class="mid-2">
+									<% if(product.appliedOffer){ %>
+										<h4 style="color: red;"><%= product.appliedOffer.percentage %> % Off</h4>
+										<p><em class="item_price">
+											<strike><%= '\u20B9' +product.price %></strike>
+										</em></p>
+									<p class="offerPrice" style="margin-left: 10px;"><%= '\u20B9' + Math.ceil(product.offerPrice) %></p>
+									<% }else{ %>
+										<p><em class="item_price">
+											<%= '\u20B9' +product.price %>
+										</em></p>
+									<% } %>
+									<!-- <div class="block">
+										<div class="starbox small ghosting"> </div>
+									</div> -->
+									<div class="clearfix"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<% }) %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%- include("../user/layouts/footer") %>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="js/simpleCart.min.js"> </script>
+		<!-- slide -->
+		<script src="js/bootstrap.min.js"></script>
+		<!--light-box-files -->
+		<script src="js/jquery.chocolat.js"></script>
+		<link rel="stylesheet" href="css/chocolat.css" type="text/css" media="screen" charset="utf-8">
+		<!--light-box-files -->
+		<script type="text/javascript" charset="utf-8">
+			$(function () {
+				$('a.picture').Chocolat();
+			});
+		</script>
+
+
+		</body>
+
+		</html>

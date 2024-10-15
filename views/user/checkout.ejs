@@ -1,0 +1,494 @@
+<%- include("../user/layouts/header") %>
+
+    <section class="bg-light py-5 " style="margin: 20px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12  mb-4">
+                    <!-- Checkout -->
+                    <form id="checkoutForm" action="/place-order" method="post">
+                        <div class="card col-md-7 shadow-0 border">
+                            <div class="p-4">
+                                <div class="row">
+                                    <h5 class="card-title mb-3">Delivery adress:</h5>
+                                    <div id="addAddress" class="col-md-12">
+                                        <p><span style="color: red;">* marked sections are mandatory</span></p>
+                                        <div class="col-md-12 mb-3">
+                                            <p class="mb-0">Full Name <span style="color: red;">*</span></p>
+                                            <div class="form-outline">
+                                                <input name="fullName" type="text" id="fullName" placeholder="Type here"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-0">Phone<span style="color: red;">*</span></p>
+                                            <div class="form-outline">
+                                                <input name="phoneNUmber" type="tel" id="phoneNUmber"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-0">Email</p>
+                                            <div class="form-outline">
+                                                <input type="email" id="email" placeholder="example@gmail.com"
+                                                    class="form-control" name="email" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-0">Address<span style="color: red;">*</span></p>
+                                            <div class="form-outline">
+                                                <input type="text" id="house" placeholder="Type here"
+                                                    class="form-control" name="house" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-0">Landmark/locality</p>
+                                            <div class="form-outline">
+                                                <input type="text" id="landMark" placeholder="Type here"
+                                                    class="form-control" name="landMark" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-0">City<span style="color: red;">*</span></p>
+                                            <div class="form-outline">
+                                                <input type="text" id="city" placeholder="Type here"
+                                                    class="form-control" name="city" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-0">District</p>
+                                            <div class="form-outline">
+                                                <input type="district" id="district" placeholder="Type here"
+                                                    class="form-control" name="district" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-0">State</p>
+                                            <div class="form-outline">
+                                                <input type="state" id="state" placeholder="Type here"
+                                                    class="form-control" name="state" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-0">PIN code<span style="color: red;">*</span></p>
+                                            <div class="form-outline">
+                                                <input type="tel" id="pincode" class="form-control" name="pincode" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ..................  -->
+                                    <div class="col-md-12 " style="margin-top: 2vh;">
+                                        <span id="savedAddress-btn" class="btn btn-primary">Saved Addresses</span>
+                                    </div>
+                                    <div id="savedAddress" class="col-md-12" hidden>
+                                        <div class="row mb-3">
+                                            <% savedAddress?.addresses.forEach(address=>{ %>
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="form-check h-100 border rounded-3">
+                                                        <div class="p-3">
+                                                            <input class="form-check-input selectAddress" type="radio"
+                                                                name="selectedAddress" 
+                                                                value="<%= `${address.fullName}\n${address.houseName}\n${address.locality}\n${address.city}\n${address.pinCode}\n${address.district}\n${address.state}\n${address.phoneNumber}` %>" />
+                                                            <label class="form-check-label" >
+                                                                <%= address.title %> <br />
+                                                                    <small class="text-muted">
+                                                                        <%= address.fullName %>, <%= address.houseName%>
+                                                                                , <%=address.locality%>,
+                                                                                    <%=address.city%>,
+                                                                                        <%=address.pinCode%>,
+                                                                                            <%=address.district%>,
+                                                                                                <%=address.state%>,
+                                                                                                    <%=address.phoneNumber%>
+                                                                    </small>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-4" />
+                                <h5 class="card-title mb-3">Add delivery instructions</h5>
+                                <div class="row mb-3">
+                                    <div class="mb-3 col-md-12">
+                                        <div class="form-outline">
+                                            <textarea name="deliveryInstruction" class="form-control"
+                                                id="textAreaExample1" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- single Product Summary........................................................... -->
+
+                        <div class=" col-md-5  d-flex justify-content-center justify-content-lg-end">
+                            <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
+                                <% if(product){ %>
+                                    <h6 class="mb-3 " style="font-weight: bolder; font-size: larger;">Summary</h6>
+                                    <hr />
+                                    
+                                    <div class="d-flex col-md-12 justify-content-between">
+                                        <a href="" id="viewCoupons" > view available coupons</a>
+                                        <div hidden  id="couponsPreview" class="row">
+                                            <% coupons.forEach(coupon=>{ %>
+                                                <div   class="col-sm-12 row coupon-container" >
+                                                    <small class="col-sm-6 coupon-title" ><%= coupon.couponTitle %></small>
+                                                    <small class="col-sm-4 couponAmount" style="font-size: 14px;" >&#x20B9; <%= coupon.couponAmount %> OFF</small>
+                                                    <a href=""  class="col-sm-2 applyBtn coupon-applyBtn" >Apply</a>
+                                                    <input type="hidden" value="<%= coupon._id %>" class="couponId">
+                                                </div>
+                                                <% }) %>
+                                        </div>
+                                        <p hidden class="mb-2 fw-bold" id="realPrice">&#x20B9; <%= product.price*productQty %></p>
+                                        <p  class="mb-2">Total price:</p>
+                                        <% if(product.appliedOffer){ %>
+                                            <input type="hidden" value="<%=  Math.ceil(product.offerPrice)*productQty %>" id="totalPrice" name="totalPrice">
+                                            <input type="hidden" name="selectedCoupon" value="" id="selectedCoupon">
+                                            <strike><p class="mb-2 fw-bold">&#x20B9; <%= product.price*productQty %></strike>
+                                            <span>Offer Price:</span><p class="mb-2 fw-bold" id="reducedPrice">&#x20B9; <%= Math.ceil(product.offerPrice)*productQty %></p>
+                                        <% }else{ %>
+                                            <input type="hidden" name="selectedCoupon" value="" id="selectedCoupon">
+                                            <input type="hidden" value="<%= product.price %>" id="totalPrice" name="totalPrice">
+                                            <p class="mb-2 fw-bold" id="originalPrice">&#x20B9; <%= product.price*productQty %></p>
+                                        <% } %>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <% if(userWallet){ %>
+                                            <p> <b>Wallet Balance:</b> &#x20B9;<span id="walletBalance"><%= userWallet?.amount %></span></p>
+                                        <% }else{ %>
+                                            <p> <b>Wallet Balance:</b> &#x20B9;<span id="walletBalance">0</span></p>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <h5>Choose a payment method</h5>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" name="paymentMethod" value="COD" id="paymentCOD"
+                                                class="paymentOptions custom-control-input">
+                                            <label class="custom-control-label" for="paymentCOD">Cash on Delivery</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" name="paymentMethod" value="Online Payment" id="onlinePayment"
+                                                class="paymentOptions custom-control-input">
+                                            <label class="custom-control-label" for="onlinePayment">Online Payment</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" name="paymentMethod" value="Wallet Payment" id="walletPayment"
+                                                class="paymentOptions custom-control-input">
+                                            <label class="custom-control-label" for="walletPayment">Pay Using Wallet Money</label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <h6 class="text-dark my-4">Items:</h6>
+                                    <div class="d-flex col-md-12 align-items-center mb-4">
+                                        <div class="me-3 col-md-4 position-relative">
+                                            <img src="<%= product.productImages[0] %>" style="height: 96px; width: 96x;"
+                                                class="img-sm rounded border" />
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="hidden" name="productId" value="<%= product._id %>">
+                                            <a class="nav-link"><%= product.productName %></a>
+                                            <% if(product.appliedOffer){ %>
+                                                <input type="hidden" name="productPrice" value="<%= Math.ceil(product.offerPrice) %>">
+                                                <div class="price ">&#x20B9; <%= Math.ceil(product.offerPrice) %></div>
+                                            <% }else{ %>
+                                                <input type="hidden" name="productPrice" value="<%= product.price %>">
+                                                <div class="price ">&#x20B9;  <%= product.price %></div>
+                                            <% } %>
+                                            <input type="hidden" name="orderProductQty" value="<%= productQty %>">
+                                            <div class="">Quantity: <%= productQty %></div>
+                                        </div>
+                                    </div>
+                                    <% } else{%>
+                                        <div>Cart Checkout</div>
+                                        <h6 class="mb-3 " style="font-weight: bolder; font-size: larger;"> Summary</h6>
+                                        <hr />
+                                        <div class="d-flex col-md-12 justify-content-between">
+                                            <a href="" id="viewCoupons" > view available coupons</a>
+                                            <div hidden  id="couponsPreview" class="row">
+                                                <% coupons.forEach(coupon=>{ %>
+                                                    <div   class="col-sm-12 row coupon-container">
+                                                        <small class="col-sm-6 coupon-title"><%= coupon.couponTitle %></small>
+                                                        <small class="col-sm-4 couponAmount" >&#x20B9; <%= coupon.couponAmount %> OFF</small>
+                                                        <a href="" class="col-sm-2 applyBtn coupon-applyBtn" style="font-size: 13px;">Apply</a>
+                                                        <input type="hidden" value="<%= coupon._id %>" class="couponId">
+                                                    </div>
+                                                <% }) %>
+                                            </div>
+                                            <div>
+                                                <span  class="mb-2">Total price:</span>
+                                                <span id="realPrice">&#x20B9; <%= userCart.totalPrice %></span>
+                                            </div>
+                                            
+                                            
+                                            <input type="hidden" name="cartId" value="<%= userCart._id %>">
+                                            
+                                            <% if(coupons.length){ %>
+                                                <span>Offer Price:</span><p class="mb-2 fw-bold" id="reducedPrice">&#x20B9; <%= userCart.totalPrice %></p>
+                                            <% }else{ %>
+                                                <p class="mb-2 fw-bold" id="originalPrice" >&#x20B9; <%= userCart.totalPrice %></p>
+                                            <% } %>
+                                            <input type="hidden" name="selectedCoupon" value="" id="selectedCoupon">
+                                            <input type="hidden" value="<%= userCart.totalPrice %>" id="totalPrice" name="totalPrice">
+                                            
+                                            <p class="mb-2 fw-bold">Total Products: <%= userCart.totalProducts %></p>
+                                        </div>
+                                        <div class="input-group mt-3 mb-4">
+                                            <input type="text" class="form-control border" name="" placeholder="Promo code" />
+                                            <button class="btn btn-light text-primary border">Apply</button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <% if(userWallet){ %>
+                                                <p> <b>Wallet Balance:</b> &#x20B9;<span id="walletBalance"><%= userWallet?.amount %></span></p>
+                                            <% }else{ %>
+                                                <p> <b>Wallet Balance:</b> &#x20B9;<span id="walletBalance">0</span></p>
+                                            <% } %>
+                                            
+                                        </div>
+                                        <div>
+                                            <h5>Choose a payment method</h5>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" name="paymentMethod" value="COD" id="paymentCOD"
+                                                    class="paymentOptions custom-control-input">
+                                                <label class="custom-control-label" >Cash on Delivery</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" name="paymentMethod" value="Online Payment" id="onlinePayment" class="paymentOptions custom-control-input">
+                                                <label class="custom-control-label" >Online Payment</label>
+                                            </div>
+                                            <div class="custom-control custom-radio" >
+                                                <input type="radio" name="paymentMethod" value="Wallet Payment" id="walletPayment"
+                                                    class="paymentOptions custom-control-input">
+                                                <label class="custom-control-label" for="walletPayment" >Pay Using Wallet Money</label>
+                                            </div>  
+                                        </div>
+                                        <hr />
+                                        <h6 class="text-dark my-4">Items:</h6>
+                                        <% userCart.items.forEach((item)=>{ %>
+                                            <div class="d-flex col-md-12 align-items-center mb-4">
+                                                <div class="me-3 col-md-4 position-relative">
+                                                    <img src="<%= item.productId.productImages[0] %>"
+                                                        style="height: 96px; width: 96x;"
+                                                        class="img-sm rounded border" />
+                                                </div>
+                                                <div class="col-8">
+                                                    <input type="hidden" name="productId" id="productId" value="<%= item.productId._id %>">
+                                                    <a class="nav-link"> <%= item.productId.productName %> </a>
+                                                    <% if(item.productId.appliedOffer){ %>
+                                                        <input type="hidden" name="productPrice" id="productPrice"
+                                                        value="<%= item.productId.offerPrice %>">
+                                                        <div class="price ">&#x20B9; <%= item.productId.offerPrice %> </div>
+                                                    <% }else{ %>
+                                                        <input type="hidden" name="productPrice" id="productPrice" value="<%= item.productId.price %>">
+                                                        <div class="price ">&#x20B9; <%= item.productId.price %> </div>
+                                                    <% } %>
+                                                    
+                                                    <input type="hidden" name="orderProductQty" id="orderProductQty" value="<%= item.quantity %>">
+                                                    <div class="">Quantity: <%= item.quantity %> </div>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                                <% } %>
+                                <div  id="CODContainer" class="float-end col-md-6" style="margin-top: 2vh;">
+                                    <input  id="submitBtn" type="submit" class="btn btn-success " value="Place Order">
+                                </div>
+                             </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </section>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#savedAddress-btn').click(function (event) {
+            event.preventDefault();
+            $('#savedAddress').toggle();
+            $('#addAddress').toggle();
+
+        })
+        
+        const walletPayment = $('#walletPayment')
+        const totalPrice = parseInt($('#totalPrice').val());
+        const walletBalance = parseInt($('#walletBalance').text());
+        if(walletBalance<totalPrice){
+            $('#walletPayment').prop('disabled',true);
+        }
+        
+        $('#submitBtn').on('click',function(event){
+            event.preventDefault();
+           
+            if (!formHasData()) {
+                event.preventDefault();
+                return alert('Please specify an address and payment method')
+            }
+            function formHasData() {
+                
+                const addAddres = $('#fullName').val().trim() !== '' && $('#phoneNUmber').val().trim() !== '' &&
+                    $('#house').val().trim() !== '' && $('#city').val().trim() !== '' &&
+                    $('#pincode').val().trim() !== '';
+                const savedAddress = $('.selectAddress:checked').length !== 0;
+                const paymentMethod = $('.paymentOptions:checked').length !== 0;
+               
+                return (addAddres || savedAddress) && paymentMethod;
+            }
+            
+            const formData = Object.fromEntries(
+                new FormData(document.getElementById("checkoutForm")),
+            );
+            console.log(formData)
+            $.ajax({
+                url: '/place-order',
+                type: 'POST',
+                data: formData,
+                success: function(response){
+                    console.log(response)
+                    if(response.COD){
+                        location.href = '/order-success';
+                    }else if(response.stock == false){
+                        return alert('Sorry, Out of Stock')
+                    }else{
+                        console.log(response)
+                        razorPayPayment(response)
+                    }
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            })
+
+            function razorPayPayment(order){
+                console.log('razor')
+                var options = {
+                    "key": "rzp_test_EbOxVRcWySzIRR",
+                    "amount": order.amount,
+                    "currency": order.currency, 
+                    "name": "Bubbles",
+                    "description": "Test Transaction",
+                    // "image": "https://example.com/your_logo",
+                    "order_id": order.id, 
+                    "handler": function (response){
+                        alert('Payment Successfull');
+                        verifyPayment(response,order);
+                    },
+                    "prefill": { 
+                    "name": "Gaurav Kumar", 
+                    "email": "gaurav.kumar@example.com", 
+                    "contact": "9000090000"  
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"   
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                }
+
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response){
+                    alert('Payment Failed');
+                    verifyPayment(response,order)
+                });
+                rzp1.open();
+           
+            }
+
+            function verifyPayment(payment,order){ 
+                $.ajax({
+                    url: '/verify-payment',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data:JSON.stringify({
+                        payment,
+                        order,
+                        formData
+                    }),
+                    success: function(response){
+                        console.log('payment status',response);
+                        if(response.payment_success){
+                            location.href = '/order-success'
+                        }                    
+                    },
+                    error: function(_,...error){
+                        console.log(...error)
+                    }
+                })
+            }
+        })
+    })
+
+
+</script>
+
+
+<script>
+    $(document).ready(function(){
+
+        // select only coupons in the price range of product price
+
+        const realPrice =parseInt($('#realPrice').text().split(' ')[1])
+        console.log('real',realPrice)
+        const coupons = $('.couponAmount');
+        $('.couponAmount').each(function(){
+            const couponValue = parseInt($(this).text().split(' ')[1]);
+            console.log(couponValue)
+            if(couponValue>realPrice){
+                console.log('high')
+                $(this).parent().hide()
+            }
+        })
+        //..........................................................................
+       const originalPrice =parseInt($('#originalPrice').text().split(' ')[1]) ;
+       const reducedPrice = parseInt($('#reducedPrice').text().split(' ')[1]) ;
+        console.log(originalPrice,reducedPrice)
+       
+        $('#viewCoupons').on('click',function(event){
+            event.preventDefault();
+            $('#couponsPreview').toggle();
+        })
+        
+       
+
+        $('.applyBtn').click(function(event){
+            event.preventDefault();
+            if($(this).text() == 'Apply'){
+                console.log($('.applyBtn').not(this))
+                $('.applyBtn').not(this).toggle();
+                $(this).text('Remove');
+                const couponAmount = parseInt($(this).prev('.couponAmount').text().split(' ')[1]);
+                const couponId = $(this).next('.couponId').val();
+                
+                $('#selectedCoupon').val(couponId);
+               
+                if(reducedPrice ){
+                    const newPrice = reducedPrice - couponAmount;
+                    $('#reducedPrice').text('₹ ' + newPrice);
+                    $('#totalPrice').val(newPrice)
+                }else if(originalPrice){
+            
+                    const newPrice = originalPrice - couponAmount;
+                    $('#originalPrice').text( '₹ ' + newPrice);
+                    $('#totalPrice').val(newPrice)
+                }
+                console.log(couponId);
+                console.log('amount',couponAmount);
+
+            }else{
+                $('.applyBtn').not(this).toggle()
+                $(this).text('Apply');
+                $('#reducedPrice').text('₹ ' + reducedPrice)
+                $('#originalPrice').text('₹ ' + originalPrice)
+                $('#selectedCoupon').val('')
+            }
+        })
+    })
+</script>
+
+    <%- include("../user/layouts/footer") %>
+
+        <script src="/js/simpleCart.min.js"> </script>
+
+        <script src="/js/bootstrap.min.js"></script>
+        </body>
+
+        </html>
